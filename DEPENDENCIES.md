@@ -1,6 +1,6 @@
 # External dependencies (referenced, not bundled)
 
-This repository contains only my own deployment code. The components below are public or
+This repository contains only original deployment code. The components below are public or
 third-party and are intentionally not committed here — install or fetch them separately.
 
 ## Manufacturer (RobROS, public)

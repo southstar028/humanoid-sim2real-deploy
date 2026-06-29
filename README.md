@@ -8,15 +8,14 @@ project.
 A sim-to-real deployment stack that runs a **29-DoF whole-body RL tracking policy** on a
 **humanoid robot's onboard computer** — a CPU-only NUC (Ubuntu 24.04 / Python 3.12, no GPU).
 It comprises a low-level control server that runs the policy on **CPU** over the robot's
-**CycloneDDS** SDK, an offline motion feeder, a live VR-teleoperation publisher, and — the
-part I'm most proud of — a **robot-free "sim2sim-over-DDS" harness** that exercises the
-*entire* control path before the robot is ever powered on.
+**CycloneDDS** SDK, an offline motion feeder, a live VR-teleoperation publisher, and the
+**robot-free "sim2sim-over-DDS" test harness** described above.
 
-> **Scope of this repository.** This is a portfolio extract of my own deployment and
-> verification engineering. The trained policy weights and the manufacturer's binary SDK are
-> not distributed here — see [What is not included](#what-is-not-included). Everything present
-> is code I wrote: the sim-to-real server, the feeder, the teleop publisher, and the DDS test
-> harness.
+> **Scope of this repository.** This repository is a portfolio extract of original deployment
+> and verification work. The trained policy weights and the manufacturer's binary SDK are not
+> distributed here (see [What is not included](#what-is-not-included)). All code present is
+> original work: the sim-to-real server, the feeder, the teleoperation publisher, and the DDS
+> test harness.
 
 ---
 
@@ -102,8 +101,8 @@ bash scripts/run_real.sh                       # staged, human-confirmed bring-u
 
 ## Safety
 
-The real server never simply "runs." It performs a staged bring-up in which a human confirms
-each step (`y/N`): lowstate received with torque off → BMS/motor init → torque on → low-level
+The real server does not start the policy directly; it performs a staged bring-up in which a
+human confirms each step (`y/N`): lowstate received with torque off → BMS/motor init → torque on → low-level
 joint control → two-second ramp to the default pose → policy loop. Operating procedure: robot
 on a hoist, e-stop in hand, and the `sim_test` gate passed first. Active guards: joint-limit
 clamp, velocity rate-limit, lowstate watchdog, and a damping shutdown on Ctrl-C or any
